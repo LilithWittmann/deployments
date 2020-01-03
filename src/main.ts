@@ -11,7 +11,10 @@ async function run() {
     const step = core.getInput('step', { required: true });
     const logsURL = core.getInput('logs');
     const description = core.getInput('desc');
-
+    let user_ref = core.getInput('ref')
+    if (!user_ref) {
+      user_ref = ref
+    }
     const client = new github.GitHub(token, {
       previews: ['ant-man-preview', 'flash-preview'],
     });
@@ -31,7 +34,7 @@ async function run() {
         const deployment = await client.repos.createDeployment({
           owner: repo.owner,
           repo: repo.repo,
-          ref: ref,
+          ref: user_ref,
           required_contexts: [],
           environment,
           auto_merge: false,
